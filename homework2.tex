@@ -70,7 +70,37 @@ it corresponds to 1. Finally:
 
 
 \paragraph{Alternative solution}
-It is perhaps possible to try out a different path. In fact, after the sub
+It is perhaps possible to try out a different path. In fact, after the first substitution (introducing $\bf{u}$), we can immediately
+make the following change of variables, switching to $\bf{t}$:
+\[
+    \sqrt{C}\bf{t} = \bf{u}
+\]
+where $\sqrt{C}$ is defined as the squared root of the matrix C, meaning a matrix such that $\sqrt{C} \sqrt{C} = C$. This means that
+\[
+\bf{u}^T C \bf{u} = (\sqrt{C}\bf{t})^T C^{-1}\sqrt{C}\bf{t} = \bf{t} \cdot \bf{t} = t^2    
+\]
+Such a change of coordinates will also introduce the determinant of the transformation matrix $\sqrt{C}$ in the integral. Moreover,
+$\det{\sqrt{C}}=\sqrt{\det{C}}$ due to Binet's Theorem. 
+\begin{gather*}
+    \phi(\bf{k})= \int d^n u A \exp{\left\{ -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - i\bf{k}^T(\bf{u}+\bf{\mu}) \right\}} = \\
+    = A\sqrt{\det{C}}\int d^n t e^{-i\bf{k}\cdot \bf{\mu}}e^{-i\bf{k}\sqrt{C}\bf{t}}e^{-\frac{1}{2}t^2} = A\sqrt{\det{C}}e^{-i\bf{k}\cdot \bf{\mu}} \int d^n t e^{-\frac{1}{2}[t^2+2i\bf{k}\sqrt{C}\bf{t}]}
+\end{gather*}
+Here we perform a square completion by adding and subtracting the term $\bf{k}^TC\bf{k}$
+\begin{gather*}
+    \phi(\bf{k}) = A\sqrt{\det{C}} e^{-i\bf{k}\cdot \bf{\mu}}e^{-\frac{1}{2}\bf{k}^T C \bf{k}}\int d^nt e^{-\frac{1}{2}[\bf{t}+i\sqrt{C}\bf{k}]^2}
+\end{gather*}
+A final substitution $\bf{y}=\bf{t}+i\sqrt{C}\bf{k}$ leads to 
+\begin{gather*}
+    \phi(\bf{k}) = A\sqrt{\det{C}} e^{-i\bf{k}\cdot \bf{\mu}}e^{-\frac{1}{2}\bf{k}^T C \bf{k}}\int d^ny e^{-\frac{1}{2}y^2}
+\end{gather*}
+But the integral in the latter is equal to $(2\pi)^{N/2}$, and therefore it cancels out with the term
+$A\sqrt{\det{C}}=(2\pi)^{-N/2}$. So we're left with 
+\begin{gather*}
+    \phi(\bf{k}) = e^{-i\bf{k}\cdot \bf{\mu}}e^{-\frac{1}{2}\bf{k}^T C \bf{k}}
+\end{gather*}
+which is again the expected result.
+
+\subsection{Method 2: diagonalization}
 
 
 \end{document}
