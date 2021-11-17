@@ -1,0 +1,76 @@
+\documentclass[a4paper,11pt,fleqn]{article}
+\usepackage[utf8]{inputenc}
+%\usepackage[italian]{babel}
+%\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{multirow}
+\usepackage{hyphenat}
+\usepackage{sectsty}
+\usepackage{amsmath}
+\usepackage{amssymb}
+%\usepackage{subfigure}
+%\usepackage{color}
+\usepackage{hyperref}
+
+
+\title{Homework 2}
+\author{Alessandro Bianchetti}
+
+\begin{document}
+\maketitle
+
+\section{Exercise 4}
+The purpose here is to prove that the characteristic function of a MVN is given by
+\begin{equation}
+    \phi(\bf{k}) = \exp{(-i\mu^T\cdot \bf{k}-\frac{1}{2}\bf{k}^T C^{-1}\bf{k})}
+\end{equation}
+Let's first remind the definition of characteristic function:
+\begin{equation}
+    \label{eqn:char}
+    \phi(\bf{k}) = \int d^nx \exp{(-i\bf{k}\cdot \bf{x} )p(\bf{x})}
+\end{equation}
+Also recall the form of the MVN function
+\begin{equation}
+    \mathcal{N}(\bf{x}|\bf{\mu}, C) = \frac{1}{(2\pi)^{N/2}\sqrt{\det{C}}} \exp{\left\{-\frac{1}{2}(\bf{x}-\bf{\mu})^T C^{-1} (\bf{x}-\bf{\mu})\right\}}
+\end{equation}
+So let's plug this definition inside \ref*{eqn:char} and see what happens. First,
+we're going to apply the square completion technique, thus solving the Fourier Transform.
+Then we're going to do it by rotating the covariance matrix C making it diagonal.
+
+\subsection{Method 1: square completion}
+For simplicity, from now on we refer to the normalization factor of the multivariate Gaussian as $A$.
+\begin{gather*}
+    \phi(\bf{k}) = \int d^nx \exp{(-i\bf{k}\cdot \bf{x}) A \exp{\left\{-\frac{1}{2}(\bf{x}-\bf{\mu})^T C^{-1} (\bf{x}-\bf{\mu})\right\}}} = \\
+    = \int d^n u A \exp{\left\{ -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - i\bf{k}^T(\bf{u}+\bf{\mu}) \right\}}
+\end{gather*}
+where we replaced $\bf{u} = \bf{x}-\bf{\mu}$. Let's play on the exponent a bit in order to build a new squared
+quantity at the exponent, this time involving the frequency $\bf{k}$.
+\begin{multline*}
+    -\frac{1}{2}\bf{u}^T C^{-1}\bf{u} - i\bf{k} \cdot (\bf{u}+\bf{\mu}) = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - i \bf{k}\cdot \bf{u} -i \bf{k}\cdot \bf{\mu} = \\
+    = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - \frac{i}{2} \bf{k}\cdot \bf{u} - \frac{i}{2} \bf{k}\cdot \bf{u} -i \bf{k}\cdot \bf{\mu} = \\
+    = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - \frac{i}{2} \bf{k}^T \bf{u} - \frac{i}{2} \bf{u}^T \bf{k} -i \bf{k}\cdot \bf{\mu} = \\
+    = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - \frac{i}{2} \bf{k}^T C C^{-1} \bf{u} - \frac{i}{2} \bf{u}^T C^{-1}C \bf{k} -i \bf{k}\cdot \bf{\mu} = \\
+    = = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - \frac{i}{2} \bf{k}^T C C^{-1} \bf{u} - \frac{i}{2} \bf{u}^T C^{-1}C \bf{k} +\frac{1}{2}\bf{k}^T C \bf{k} -\frac{1}{2}\bf{k}^T C \bf{k} -i \bf{k}\cdot \bf{\mu} = \\
+    = -\frac{1}{2}(\bf{u}+iC\bf{k})^T C^{-1} (\bf{u}+iC\bf{k}) -\frac{1}{2}\bf{k}^T C \bf{k} - i \bf{k} \cdot\bf{\mu}  
+\end{multline*}
+Therefore, now 
+\begin{gather*}
+    \phi(\bf{k}) = \exp{\left[-\frac{1}{2}\bf{k}^T C \bf{k} - i \bf{k}\cdot \bf{\mu}\right]} \int d^n u A \exp{\left[ -\frac{1}{2}(\bf{u}+iC\bf{k})^T C^{-1} (\bf{u}+iC\bf{k}) \right]}
+\end{gather*}
+and we can again change variable $\bf{t} = \bf{u}+iC\bf{k}$, so that
+\begin{gather*}
+    \phi(\bf{k}) = \exp{\left[-\frac{1}{2}\bf{k}^T C \bf{k} - i \bf{k}\cdot \bf{\mu}\right]} \int d^n t A \exp{\left[ -\frac{1}{2}\bf{t}^T C^{-1} \bf{t} \right]}
+\end{gather*}
+but in this last equation the integral is a perfectly normalised Gaussian integrated over infinity, meaning
+it corresponds to 1. Finally:
+\begin{gather*}
+    \phi(\bf{k}) = \exp{\left[-\frac{1}{2}\bf{k}^T C \bf{k} - i \bf{k} \cdot \bf{\mu}\right]}
+\end{gather*}
+
+
+\paragraph{Alternative solution}
+It is perhaps possible to try out a different path. In fact, after the sub
+
+
+\end{document}
