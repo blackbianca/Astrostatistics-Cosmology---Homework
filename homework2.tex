@@ -102,5 +102,51 @@ which is again the expected result.
 
 \subsection{Method 2: diagonalization}
 
+This time we try introducing a rotation, governed by a rotation matrix.
+\begin{equation}
+    R(\theta) = 
+    \begin{pmatrix}
+        \cos{\theta} & \sin{\theta} \\
+        \sin{\theta} & \cos{\theta} 
+    \end{pmatrix}
+\end{equation}
+With a change of coordinates imposed by a rotation matrix there is no need
+to worry about introducing the determinant of the Jacobian as we did in the
+previous section, since $\det{R(\theta)}=1$ $\forall \theta$.
+We choose R so to make the inverse of the covariance matrix diagonal $R^T C^{-1} R = \Lambda$.
+
+So let's start again from the point where we've already made the shift of 
+coordinates, introducing $\bf{u} = \bf{x}-\bf{\mu}$:
+\begin{equation*}
+    \phi(\bf{k})= \int d^n u A \exp{\left[ -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - i\bf{k}^T(\bf{u}+\bf{\mu}) \right]}
+\end{equation*}
+Now we set $\bf{u} = R\bf{y}$
+\begin{gather*}
+    \phi(\bf{k})= \int d^n y A \exp{\left[ -\frac{1}{2}\bf{y}^T R^T C^{-1} R\bf{y} - i\bf{k}^T(R\bf{y}+\bf{\mu}) \right]} = \\
+    = \int d^n y A \exp{\left[ -\frac{1}{2}\bf{y}^T \Lambda \bf{y} - i\bf{k}^T R \bf{y} -i \bf{k}^T\bf{\mu} \right]}
+\end{gather*}
+Now we better define $\bf{z} = \bf{k}^T R$, so that 
+\begin{gather*}
+    \phi(\bf{k})= \int d^n y A \exp{\left[ \sum_i(\frac{1}{2}\lambda_iy_i^2-h_iy_i) -i \bf{k}^T\bf{\mu} \right]} \\
+    = A \exp{-i\bf{k}\cdot \bf{\mu}} \int d^ny \Pi_i \exp{\left[-\frac{1}{2}\lambda_i y_i^2 -z_i y_i\right]}  
+\end{gather*}
+And we proceed again by completing the square:
+\begin{gather*}
+    \phi(\bf{k}) = A \exp{-i\bf{k}\cdot \bf{\mu}} \Pi_i \int d^ny \exp{\left[-\left(\sqrt{\frac{\lambda_i}{2}}y_i + \frac{z_i}{\sqrt{2\lambda_i}}\right)^2 \right]} \exp{\frac{z_i^2}{2\lambda_i}} =  \\
+    = A \exp{\left[-i\bf{k}\cdot\bf{\mu} \right]} \Pi_i \sqrt{\frac{2}{\lambda_i}}(2\pi)^{1/2}\exp{\frac{h_i^2}{2\lambda_i}}
+\end{gather*}
+Remember $A=(2\pi)^{-N/2}(\det{C})^{-1/2}$, and $\det{C}^{-1/2}=\Pi_i\sqrt{\lambda_i}$ using eigenvalues.
+\begin{gather*}
+    \phi(\bf{k}) = (2\pi)^{-N/2} \Pi_i\sqrt{\lambda_i} \exp{-i\bf{k}\cdot \bf{\mu}} (2\pi)^{N/2} \Pi_i \sqrt{\lambda_i} \sqrt{\frac{2}{\lambda_i}}\exp{\frac{z_i^2}{2\lambda_i}} \\
+    = \exp{\left[-i\bf{k}\cdot \bf{\mu}\right]} \Pi_i \exp{\left[\frac{z_i^2}{2\lambda_i}\right]} = \exp{\left[-i\bf{k}\cdot \bf{\mu}\right]} \exp{\left[-\frac{\bf{k}^TR\Lambda^{-1} R^T\bf{k}}{2}\right]}
+\end{gather*}
+but $R \Lambda^{-1} R^T = C$, so finally 
+\begin{gather*}
+    \phi(\bf{k}) = \exp{\left[-i\bf{k}\cdot\bf{\mu}-\frac{1}{2}\bf{k}^TC\bf{k}\right]}
+\end{gather*}
+which is the result we wanted to achieve.
+
+
+
 
 \end{document}
