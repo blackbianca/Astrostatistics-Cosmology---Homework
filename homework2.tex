@@ -45,16 +45,34 @@ For simplicity, from now on we refer to the normalization factor of the multivar
     = \int d^n u A \exp{\left\{ -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - i\bf{k}^T(\bf{u}+\bf{\mu}) \right\}}
 \end{gather*}
 where we replaced $\bf{u} = \bf{x}-\bf{\mu}$. Let's play on the exponent a bit in order to build a new squared
-quantity at the exponent, this time involving the frequency $\bf{k}$.
+quantity at the exponent, this time involving the frequency $\bf{k}$. The formula of the square completion is given by
+\begin{align}
+    \label{eqn:square_completion}
+    \bf{x}^T A \bf{x} + \bf{b}\cdot \bf{x} + c = (\bf{x}+\bf{m})^TA(\bf{x}+\bf{m})+\bf{n} \\
+    \textnormal{where} \qquad \bf{m} = \frac{1}{2}A^{-1}\bf{b} \qquad \bf{n} = c -\frac{1}{4}\bf{b}^TA^{-1}\bf{b}
+\end{align}
+So in our case
 \begin{multline*}
-    -\frac{1}{2}\bf{u}^T C^{-1}\bf{u} - i\bf{k} \cdot (\bf{u}+\bf{\mu}) = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - i \bf{k}\cdot \bf{u} -i \bf{k}\cdot \bf{\mu} = \\
-    = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - \frac{i}{2} \bf{k}\cdot \bf{u} - \frac{i}{2} \bf{k}\cdot \bf{u} -i \bf{k}\cdot \bf{\mu} = \\
-    = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - \frac{i}{2} \bf{k}^T \bf{u} - \frac{i}{2} \bf{u}^T \bf{k} -i \bf{k}\cdot \bf{\mu} = \\
-    = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - \frac{i}{2} \bf{k}^T C C^{-1} \bf{u} - \frac{i}{2} \bf{u}^T C^{-1}C \bf{k} -i \bf{k}\cdot \bf{\mu} = \\
-    = = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - \frac{i}{2} \bf{k}^T C C^{-1} \bf{u} - \frac{i}{2} \bf{u}^T C^{-1}C \bf{k} +\frac{1}{2}\bf{k}^T C \bf{k} -\frac{1}{2}\bf{k}^T C \bf{k} -i \bf{k}\cdot \bf{\mu} = \\
-    = -\frac{1}{2}(\bf{u}+iC\bf{k})^T C^{-1} (\bf{u}+iC\bf{k}) -\frac{1}{2}\bf{k}^T C \bf{k} - i \bf{k} \cdot\bf{\mu}  
+   -\frac{1}{2}\bf{u}^T C^{-1}\bf{u} - i\bf{k} \cdot (\bf{u}+\bf{\mu}) = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - i \bf{k}\cdot \bf{u} -i \bf{k}\cdot \bf{\mu}
+%    = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - \frac{i}{2} \bf{k}\cdot \bf{u} - \frac{i}{2} \bf{k}\cdot \bf{u} -i \bf{k}\cdot \bf{\mu} = \\
+%    = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - \frac{i}{2} \bf{k}^T \bf{u} - \frac{i}{2} \bf{u}^T \bf{k} -i \bf{k}\cdot \bf{\mu} = \\
+%    = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - \frac{i}{2} \bf{k}^T C C^{-1} \bf{u} - \frac{i}{2} \bf{u}^T C^{-1}C \bf{k} -i \bf{k}\cdot \bf{\mu} = \\
+%    = = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - \frac{i}{2} \bf{k}^T C C^{-1} \bf{u} - \frac{i}{2} \bf{u}^T C^{-1}C \bf{k} +\frac{1}{2}\bf{k}^T C \bf{k} -\frac{1}{2}\bf{k}^T C \bf{k} -i \bf{k}\cdot \bf{\mu} = \\
+%    = -\frac{1}{2}(\bf{u}+iC\bf{k})^T C^{-1} (\bf{u}+iC\bf{k}) -\frac{1}{2}\bf{k}^T C \bf{k} - i \bf{k} \cdot\bf{\mu}  
 \end{multline*}
-Therefore, now 
+Therefore
+\begin{equation*}
+    \begin{cases}
+        A = -\frac{1}{2}C^{-1} \\
+        \bf{b} = -i\bf{k} \\
+        c = -i\bf{k}\cdot \bf{\mu}
+    \end{cases}
+\end{equation*}
+and the exponent will look like
+\begin{multline*}
+    -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - i \bf{k}\cdot \bf{u} -i \bf{k}\cdot \bf{\mu} = = -\frac{1}{2}\left[(\bf{u}+iC\bf{k})^T C^{-1} (\bf{u}+iC\bf{k})\right] -\frac{1}{2}\bf{k}^T C \bf{k} - i \bf{k} \cdot\bf{\mu}
+\end{multline*}
+We now apply this to the integral we were working on:
 \begin{gather*}
     \phi(\bf{k}) = \exp{\left[-\frac{1}{2}\bf{k}^T C \bf{k} - i \bf{k}\cdot \bf{\mu}\right]} \int d^n u A \exp{\left[ -\frac{1}{2}(\bf{u}+iC\bf{k})^T C^{-1} (\bf{u}+iC\bf{k}) \right]}
 \end{gather*}
@@ -146,6 +164,40 @@ but $R \Lambda^{-1} R^T = C$, so finally
 \end{gather*}
 which is the result we wanted to achieve.
 
+
+
+
+\section{Exercise 6}
+The idea here is proving that the characteristic function we derived is again Gaussian-shaped.
+So we will just integrate $\phi(\bf{k})$ over the frequency space and hope
+we get a simple constant.
+\begin{equation*}
+    \int d^nk \exp{\left[-i\bf{k}\cdot\bf{\mu}-\frac{1}{2}\bf{k}^TC\bf{k}\right]}
+\end{equation*}
+Again we complete the square of the exponent by applying \ref{eqn:square_completion}.
+This time 
+\begin{gather*}
+    \begin{cases}
+        \bf{m} = -iC^{-1}\bf{\mu} \\
+        n = \mu^TC^{-1}\mu
+    \end{cases}
+\end{gather*}
+and the exponent becomes
+\begin{gather*}
+    -i\bf{k}\cdot\bf{\mu}-\frac{1}{2}\bf{k}^TC\bf{k} = (\bf{k}-iC^{-1}\bf{\mu})^TC (\bf{k}-iC^{-1}\bf{\mu}) + \mu^T C^{-1}\bf{\mu}
+\end{gather*}
+Therefore, the integral becomes 
+\begin{gather*}
+    \int d^nk \exp{\left[-i\bf{k}\cdot\bf{\mu}-\frac{1}{2}\bf{k}^TC\bf{k}\right]} = \int d^nk \exp{\left[-\frac{1}{2}\left(\bf{k}^TC\bf{k} + 2 i\bf{k}\cdot\bf{\mu} \right)\right]} =\\ 
+    = \exp{\left[-\frac{1}{2}\left(\mu^T C^{-1}\mu\right) \right]}\int d^n k \exp{\left[-\frac{1}{2}(\bf{k}-iC^{-1}\bf{\mu})^TC (\bf{k}-iC^{-1}\bf{\mu})\right]}
+\end{gather*}
+Now inside the integral there is clearly a Gaussian with mean $iC^{-1}\mu$. So the integral
+is equal to $(2\pi)^{n/2}(\det{C})^{-\frac{1}{2}}$.
+\begin{gather*}
+    \int d^nk \exp{\left[-i\bf{k}\cdot\bf{\mu}-\frac{1}{2}\bf{k}^TC\bf{k}\right]} = \exp{\left[-\frac{1}{2}\mu^T C^{-1}\mu \right]} (2\pi)^{n/2}(\det{C})^{-\frac{1}{2}}
+\end{gather*}
+which is simply a constant quantity. We have thus proved that the characteristic
+function is an unnormalised Gaussian function.
 
 
 
