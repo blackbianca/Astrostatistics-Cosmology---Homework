@@ -166,6 +166,71 @@ which is the result we wanted to achieve.
 
 
 
+%-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+
+
+\section{Exercise 5}
+
+The characteristic function also has the property of generating momenta, if 
+we derive on the generic components $-ik_{\alpha}$. We want to test such 
+property 
+\begin{equation}
+    \label{eqn:generation}
+    E[x_{\alpha}^{n_{\alpha}} \dotsm x_{\beta}^{n_{\beta}}] = \frac{\partial^{n_\alpha+\dots+n_{\beta}}\phi(\vec{k})}{\partial^{n_\alpha}(-ik_{\alpha})\dotsm \partial^{n_\beta}(-ik_{\beta})}\Big|_{\vec{k}=0}
+\end{equation}
+for two simple cases: the mean of a single component $x_{\alpha}$ and the 
+covariance of two components $x_{\alpha}$ and $x_{\beta}$.
+
+\subsection{Mean}
+For the first step, we try to compute the derivative in the RHS of 
+\ref{eqn:generation} for $n_{\alpha}=1$ and $n_{\gamma}=0$ 
+$\forall \gamma \neq \alpha$. Therefore 
+\begin{gather*}
+    \label{eqn:der}
+    \frac{\partial \phi(\vec{k})}{\partial(-ik_{\alpha})}\Big|_{\vec{k}=0} = i \frac{\partial \phi(\vec{k})}{\partial k_{\alpha}}\Big|_{\vec{k}=0} = i \left[T_{\alpha}\phi(\vec{k})\right]\Big|_{\vec{k}=0}
+\end{gather*}
+where $T_{\alpha}$ is the internal derivative, meaning the derivative of the 
+exponent with respect to $k_{\alpha}$.
+\begin{gather*}
+    T_{\alpha} = \frac{\partial}{\partial k_{\alpha}}\left[-i\sum_i k_i \mu_i -\frac{1}{2}\sum_i \sum_j k_i C_{ij}k_j\right] = -i\mu_{\alpha} \sum_jC_{\alpha j}k_j
+\end{gather*}
+Now let's evaluate the expression at $\vec{k}=0$. Actually $\phi(\vec{k})|_{\vec{k}=0}=1$
+and $T_{\alpha}|_{\vec{k}=0}=-i\mu_{\alpha}$. So \ref{eqn:der} becomes
+\begin{gather*}
+    \frac{\partial \phi(\vec{k})}{\partial(-ik_{\alpha})}\Big|_{\vec{k}=0} = i \cdot (-i\mu_{\alpha}) = \mu_{\alpha}
+\end{gather*}
+but that is exactly $E[x_{\alpha}]$, so we correctly generated a first-order 
+momentum of expectation, proving the generating equation right.
+
+
+\subsection{Covariance}
+The model we have to follow is the same as before, but this time we have to 
+perform a second derivative, over the coordinates $k_{\alpha}$ and $k_{\beta}$.
+\begin{gather*}
+    \frac{\partial^2\phi(\vec{k})}{(-i)^2\partial k_{\alpha}\partial k_{\beta}}\Big|_{\vec{k}=0} = -\frac{\partial \phi (\vec{k})}{\partial k_{\alpha}\partial k_{\beta}} \Big|_{\vec{k}=0}= -\frac{\partial}{\partial k_{\alpha}}\left[\frac{\partial \phi(\vec{k})}{\partial k_{\beta}}\right]\Big|_{\vec{k}=0} =\\
+    = \frac{\partial}{\partial k_{\alpha}}\left[T_{\beta}\phi(\vec{k})\right]\Big|_{\vec{k}=0} = \left[-\frac{\partial T_{\beta}}{\partial k_{\alpha}} -T_{\alpha}T_{\beta}\phi(\vec{k})\right]\Big|_{\vec{k}=0}
+\end{gather*}
+where
+\begin{gather*}
+    \frac{\partial T_{\beta}}{\partial k_{\alpha}} = \frac{\partial}{\partial k_{\alpha}}\left[-i\mu_{\beta}-\sum_j C_{\beta j}k_j\right] = -C_{\alpha \beta}.
+\end{gather*}
+This means that
+\begin{gather*}
+    \frac{\partial^2\phi(\vec{k})}{(-i)^2\partial k_{\alpha}\partial k_{\beta}}\Big|_{\vec{k}=0} = [C_{\alpha \beta}-T_{\alpha}T_{\beta}]\phi(\vec{k})\Big|_{\vec{k}=0} = [C_{\alpha \beta}- (-i\mu_{\alpha})(-i\mu_{\beta})] = C_{\alpha \beta} +\mu_{\alpha}\mu_{\beta}
+\end{gather*}
+This is the result we wanted to reach. In fact 
+\begin{equation}
+    Cov[x_{\alpha}x_{\beta}] = E[x_{\alpha}x_{\beta}] - E[x_{\alpha}]E[x_{\beta}] = C_{\alpha \beta} +\mu_{\alpha}\mu_{\beta} - \mu_{\alpha}\mu_{\beta} = C_{\alpha \beta}
+\end{equation}
+which is the correct result. 
+
+
+
+
+
+
+%-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+
 
 \section{Exercise 6}
 The idea here is proving that the characteristic function we derived is again Gaussian-shaped.
