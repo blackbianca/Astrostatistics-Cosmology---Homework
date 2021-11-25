@@ -216,9 +216,10 @@ momentum of expectation, proving the generating equation right.
 \subsection{Covariance}
 The model we have to follow is the same as before, but this time we have to 
 perform a second derivative, over the coordinates $k_{\alpha}$ and $k_{\beta}$.
+Therefore we're setting $n_{\alpha}=1$, $n_{\beta}=1$ and $n_{\gamma}=0$ $\forall \gamma \neq \alpha, \beta$.
 \begin{gather*}
     \frac{\partial^2\phi(\vec{k})}{(-i)^2\partial k_{\alpha}\partial k_{\beta}}\Big|_{\vec{k}=0} = -\frac{\partial \phi (\vec{k})}{\partial k_{\alpha}\partial k_{\beta}} \Big|_{\vec{k}=0}= -\frac{\partial}{\partial k_{\alpha}}\left[\frac{\partial \phi(\vec{k})}{\partial k_{\beta}}\right]\Big|_{\vec{k}=0} =\\
-    = \frac{\partial}{\partial k_{\alpha}}\left[T_{\beta}\phi(\vec{k})\right]\Big|_{\vec{k}=0} = \left[-\frac{\partial T_{\beta}}{\partial k_{\alpha}} -T_{\alpha}T_{\beta}\phi(\vec{k})\right]\Big|_{\vec{k}=0}
+    = -\frac{\partial}{\partial k_{\alpha}}\left[T_{\beta}\phi(\vec{k})\right]\Big|_{\vec{k}=0} = \left[-\frac{\partial T_{\beta}}{\partial k_{\alpha}} -T_{\alpha}T_{\beta}\phi(\vec{k})\right]\Big|_{\vec{k}=0}
 \end{gather*}
 where
 \begin{gather*}
