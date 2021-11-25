@@ -25,98 +25,106 @@ This report is however independent and different from theirs.}
 \section{Exercise 4}
 The purpose here is to prove that the characteristic function of a MVN is given by
 \begin{equation}
-    \phi(\bf{k}) = \exp{(-i\mu^T\cdot \bf{k}-\frac{1}{2}\bf{k}^T C^{-1}\bf{k})}
+    \phi(\vec{k}) = \exp{(-i\mu^T\cdot \vec{k}-\frac{1}{2}\vec{k}^T C^{-1}\vec{k})}
 \end{equation}
 Let's first remind the definition of characteristic function:
 \begin{equation}
     \label{eqn:char}
-    \phi(\bf{k}) = \int d^nx \exp{(-i\bf{k}\cdot \bf{x} )p(\bf{x})}
+    \phi(\vec{k}) = \int d^nx \exp{(-i\vec{k}\cdot \vec{x}) p(\vec{x})}
 \end{equation}
-Also recall the form of the MVN function
+where $p(\vec{x})$ is whatever distribution. In our case it's the MVN function
 \begin{equation}
-    \mathcal{N}(\bf{x}|\bf{\mu}, C) = \frac{1}{(2\pi)^{N/2}\sqrt{\det{C}}} \exp{\left\{-\frac{1}{2}(\bf{x}-\bf{\mu})^T C^{-1} (\bf{x}-\bf{\mu})\right\}}
+    \mathcal{N}(\vec{x}|\mu, C) = \frac{1}{(2\pi)^{N/2}\sqrt{\det{C}}} \exp{\left[-\frac{1}{2}(\vec{x}-\mu)^T C^{-1} (\vec{x}-\vec{\mu})\right]}
 \end{equation}
-So let's plug this definition inside \ref*{eqn:char} and see what happens. First,
-we're going to apply the square completion technique, thus solving the Fourier Transform.
-Then we're going to do it by rotating the covariance matrix C making it diagonal.
+So let's plug this definition inside \ref{eqn:char} and see what happens. We need to 
+do this in two different ways: first, we're going to apply the square completion 
+technique, thus solving the Fourier Transform. Then we're going to do it by rotating
+the inverse of the covariance matrix $C^{-1}$ making it diagonal.
 
 \subsection{Method 1: square completion}
-For simplicity, from now on we refer to the normalization factor of the multivariate Gaussian as $A$.
+For simplicity, from now on we refer to the normalization factor of the multivariate Gaussian as $B$.
 \begin{gather*}
-    \phi(\bf{k}) = \int d^nx \exp{(-i\bf{k}\cdot \bf{x}) A \exp{\left\{-\frac{1}{2}(\bf{x}-\bf{\mu})^T C^{-1} (\bf{x}-\bf{\mu})\right\}}} = \\
-    = \int d^n u A \exp{\left\{ -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - i\bf{k}^T(\bf{u}+\bf{\mu}) \right\}}
+    \phi(\vec{k}) = \int d^nx \exp{(-i\vec{k}\cdot \vec{x}) B \exp{\left\{-\frac{1}{2}(\vec{x}-\vec{\mu})^T C^{-1} (\vec{x}-\vec{\mu})\right\}}} = \\
+    = \int d^N u B \exp{\left[ -\frac{1}{2}\vec{u}^TC^{-1}\vec{u} - i\vec{k}^T(\vec{u}+\vec{\mu}) \right]}
 \end{gather*}
-where we replaced $\bf{u} = \bf{x}-\bf{\mu}$. Let's play on the exponent a bit in order to build a new squared
-quantity at the exponent, this time involving the frequency $\bf{k}$. The formula of the square completion is given by
+where we replaced $\vec{u} = \vec{x}-\vec{\mu}$. Let's play on the exponent a bit in order to build a new squared
+quantity at the exponent, this time involving the frequency $\vec{k}$. The formula of the square completion is given by
 \begin{align}
     \label{eqn:square_completion}
-    \bf{x}^T A \bf{x} + \bf{b}\cdot \bf{x} + c = (\bf{x}+\bf{m})^TA(\bf{x}+\bf{m})+\bf{n} \\
-    \textnormal{where} \qquad \bf{m} = \frac{1}{2}A^{-1}\bf{b} \qquad \bf{n} = c -\frac{1}{4}\bf{b}^TA^{-1}\bf{b}
+    \vec{x}^T A \vec{x} + \vec{b}\cdot \vec{x} + c = (\vec{x}+\vec{m})^TA(\vec{x}+\vec{m})+n \\
+    \textnormal{where} \qquad \vec{m} = \frac{1}{2}A^{-1}\vec{b} \qquad n = c -\frac{1}{4}\vec{b}^TA^{-1}\vec{b}
 \end{align}
-So in our case
-\begin{multline*}
-   -\frac{1}{2}\bf{u}^T C^{-1}\bf{u} - i\bf{k} \cdot (\bf{u}+\bf{\mu}) = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - i \bf{k}\cdot \bf{u} -i \bf{k}\cdot \bf{\mu}
-%    = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - \frac{i}{2} \bf{k}\cdot \bf{u} - \frac{i}{2} \bf{k}\cdot \bf{u} -i \bf{k}\cdot \bf{\mu} = \\
-%    = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - \frac{i}{2} \bf{k}^T \bf{u} - \frac{i}{2} \bf{u}^T \bf{k} -i \bf{k}\cdot \bf{\mu} = \\
-%    = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - \frac{i}{2} \bf{k}^T C C^{-1} \bf{u} - \frac{i}{2} \bf{u}^T C^{-1}C \bf{k} -i \bf{k}\cdot \bf{\mu} = \\
-%    = = -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - \frac{i}{2} \bf{k}^T C C^{-1} \bf{u} - \frac{i}{2} \bf{u}^T C^{-1}C \bf{k} +\frac{1}{2}\bf{k}^T C \bf{k} -\frac{1}{2}\bf{k}^T C \bf{k} -i \bf{k}\cdot \bf{\mu} = \\
-%    = -\frac{1}{2}(\bf{u}+iC\bf{k})^T C^{-1} (\bf{u}+iC\bf{k}) -\frac{1}{2}\bf{k}^T C \bf{k} - i \bf{k} \cdot\bf{\mu}  
-\end{multline*}
-Therefore
+So, in our case the exponent is
+\begin{gather*}
+   -\frac{1}{2}\vec{u}^T C^{-1}\vec{u} - i\vec{k} \cdot (\vec{u}+\vec{\mu}) = -\frac{1}{2}\left[\vec{u}^TC^{-1}\vec{u} +2 i \vec{k}\cdot \vec{u} +2i \vec{k}\cdot \vec{\mu}\right].
+%    = -\frac{1}{2}\vec{u}^TC^{-1}\vec{u} - \frac{i}{2} \vec{k}\cdot \vec{u} - \frac{i}{2} \vec{k}\cdot \vec{u} -i \vec{k}\cdot \vec{\mu} = \\
+%    = -\frac{1}{2}\vec{u}^TC^{-1}\vec{u} - \frac{i}{2} \vec{k}^T \vec{u} - \frac{i}{2} \vec{u}^T \vec{k} -i \vec{k}\cdot \vec{\mu} = \\
+%    = -\frac{1}{2}\vec{u}^TC^{-1}\vec{u} - \frac{i}{2} \vec{k}^T C C^{-1} \vec{u} - \frac{i}{2} \vec{u}^T C^{-1}C \vec{k} -i \vec{k}\cdot \vec{\mu} = \\
+%    = = -\frac{1}{2}\vec{u}^TC^{-1}\vec{u} - \frac{i}{2} \vec{k}^T C C^{-1} \vec{u} - \frac{i}{2} \vec{u}^T C^{-1}C \vec{k} +\frac{1}{2}\vec{k}^T C \vec{k} -\frac{1}{2}\vec{k}^T C \vec{k} -i \vec{k}\cdot \vec{\mu} = \\
+%    = -\frac{1}{2}(\vec{u}+iC\vec{k})^T C^{-1} (\vec{u}+iC\vec{k}) -\frac{1}{2}\vec{k}^T C \vec{k} - i \vec{k} \cdot\vec{\mu}  
+\end{gather*}
+Therefore, if we keep the $-\frac{1}{2}$ out for a minute, we can define the following:
 \begin{equation*}
     \begin{cases}
-        A = -\frac{1}{2}C^{-1} \\
-        \bf{b} = -i\bf{k} \\
-        c = -i\bf{k}\cdot \bf{\mu}
+        A = C^{-1} \\
+        \vec{b} = 2i\vec{k} \\
+        c = 2i\vec{k}\cdot \vec{\mu}
+    \end{cases}
+    \textnormal{and} \qquad 
+    \begin{cases}
+        \vec{m} = iC\vec{k} \\
+        n = 2i\vec{k} + \vec{k}^TC\vec{k}
     \end{cases}
 \end{equation*}
-and the exponent will look like
+Now we apply \ref{eqn:square_completion} and factor $-\frac{1}{2}$ in again, and the exponent will look like
 \begin{multline*}
-    -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - i \bf{k}\cdot \bf{u} -i \bf{k}\cdot \bf{\mu} = = -\frac{1}{2}\left[(\bf{u}+iC\bf{k})^T C^{-1} (\bf{u}+iC\bf{k})\right] -\frac{1}{2}\bf{k}^T C \bf{k} - i \bf{k} \cdot\bf{\mu}
+    -\frac{1}{2}\vec{u}^TC^{-1}\vec{u} - i \vec{k}\cdot \vec{u} -i \vec{k}\cdot \vec{\mu} = = -\frac{1}{2}\left[(\vec{u}+iC\vec{k})^T C^{-1} (\vec{u}+iC\vec{k})\right] -\frac{1}{2}\vec{k}^T C \vec{k} - i \vec{k} \cdot\vec{\mu}
 \end{multline*}
 We now apply this to the integral we were working on:
 \begin{gather*}
-    \phi(\bf{k}) = \exp{\left[-\frac{1}{2}\bf{k}^T C \bf{k} - i \bf{k}\cdot \bf{\mu}\right]} \int d^n u A \exp{\left[ -\frac{1}{2}(\bf{u}+iC\bf{k})^T C^{-1} (\bf{u}+iC\bf{k}) \right]}
+    \phi(\vec{k}) = \exp{\left[-\frac{1}{2}\vec{k}^T C \vec{k} - i \vec{k}\cdot \vec{\mu}\right]} \int d^N u B \exp{\left[ -\frac{1}{2}(\vec{u}+iC\vec{k})^T C^{-1} (\vec{u}+iC\vec{k}) \right]}
 \end{gather*}
-and we can again change variable $\bf{t} = \bf{u}+iC\bf{k}$, so that
+and we can again change variable $\vec{t} = \vec{u}+iC\vec{k}$, so that
 \begin{gather*}
-    \phi(\bf{k}) = \exp{\left[-\frac{1}{2}\bf{k}^T C \bf{k} - i \bf{k}\cdot \bf{\mu}\right]} \int d^n t A \exp{\left[ -\frac{1}{2}\bf{t}^T C^{-1} \bf{t} \right]}
+    \phi(\vec{k}) = \exp{\left[-\frac{1}{2}\vec{k}^T C \vec{k} - i \vec{k}\cdot \vec{\mu}\right]} \int d^N t B \exp{\left[ -\frac{1}{2}\vec{t}^T C^{-1} \vec{t} \right]}
 \end{gather*}
 but in this last equation the integral is a perfectly normalised Gaussian integrated over infinity, meaning
 it corresponds to 1. Finally:
 \begin{gather*}
-    \phi(\bf{k}) = \exp{\left[-\frac{1}{2}\bf{k}^T C \bf{k} - i \bf{k} \cdot \bf{\mu}\right]}
+    \phi(\vec{k}) = \exp{\left[-\frac{1}{2}\vec{k}^T C \vec{k} - i \vec{k} \cdot \vec{\mu}\right]}
 \end{gather*}
 
 
 \paragraph{Alternative solution}
-It is perhaps possible to try out a different path. In fact, after the first substitution (introducing $\bf{u}$), we can immediately
-make the following change of variables, switching to $\bf{t}$:
+It is perhaps possible to try out a different path. In fact, after the first substitution (introducing $\vec{u}$), we can immediately
+make the following change of variables, switching to $\vec{t}$:
 \[
-    \sqrt{C}\bf{t} = \bf{u}
+    \sqrt{C}\vec{t} = \vec{u}
 \]
-where $\sqrt{C}$ is defined as the squared root of the matrix C, meaning a matrix such that $\sqrt{C} \sqrt{C} = C$. This means that
+where $\sqrt{C}$ is defined as the squared root of the matrix C, meaning a matrix such that $\sqrt{C} \sqrt{C} = C$. This means that,
+working on the exponent, we have
 \[
-\bf{u}^T C \bf{u} = (\sqrt{C}\bf{t})^T C^{-1}\sqrt{C}\bf{t} = \bf{t} \cdot \bf{t} = t^2    
+\vec{u}^T C \vec{u} = (\sqrt{C}\vec{t})^T C^{-1}\sqrt{C}\vec{t} = \vec{t} \cdot \vec{t} = t^2.
 \]
 Such a change of coordinates will also introduce the determinant of the transformation matrix $\sqrt{C}$ in the integral. Moreover,
-$\det{\sqrt{C}}=\sqrt{\det{C}}$ due to Binet's Theorem. 
+$\det{\sqrt{C}}=\sqrt{\det{C}}$ due to Binet's Theorem ($\det{(A\cdot B)} = \det{A}\det{B}$ for any couple of matrices $A$ and $B$). 
 \begin{gather*}
-    \phi(\bf{k})= \int d^n u A \exp{\left\{ -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - i\bf{k}^T(\bf{u}+\bf{\mu}) \right\}} = \\
-    = A\sqrt{\det{C}}\int d^n t e^{-i\bf{k}\cdot \bf{\mu}}e^{-i\bf{k}\sqrt{C}\bf{t}}e^{-\frac{1}{2}t^2} = A\sqrt{\det{C}}e^{-i\bf{k}\cdot \bf{\mu}} \int d^n t e^{-\frac{1}{2}[t^2+2i\bf{k}\sqrt{C}\bf{t}]}
+    \phi(\vec{k})= \int d^N u B \exp{\left\{ -\frac{1}{2}\vec{u}^TC^{-1}\vec{u} - i\vec{k}^T(\vec{u}+\vec{\mu}) \right\}} = \\
+    = B\sqrt{\det{C}}\int d^N t e^{-i\vec{k}\cdot \vec{\mu}}e^{-i\vec{k}\sqrt{C}\vec{t}}e^{-\frac{1}{2}t^2} = B\sqrt{\det{C}}e^{-i\vec{k}\cdot \vec{\mu}} \int d^N t e^{-\frac{1}{2}[t^2+2i\vec{k}\sqrt{C}\vec{t}]}
 \end{gather*}
-Here we perform a square completion by adding and subtracting the term $\bf{k}^TC\bf{k}$
+Here we perform a square completion by adding and subtracting the term $\frac{1}{2}\vec{k}^TC\vec{k}$ to the exponent (or applying the 
+formula for square completion \ref{eqn:square_completion} if you prefer).
 \begin{gather*}
-    \phi(\bf{k}) = A\sqrt{\det{C}} e^{-i\bf{k}\cdot \bf{\mu}}e^{-\frac{1}{2}\bf{k}^T C \bf{k}}\int d^nt e^{-\frac{1}{2}[\bf{t}+i\sqrt{C}\bf{k}]^2}
+    \phi(\vec{k}) = B\sqrt{\det{C}} e^{-i\vec{k}\cdot \vec{\mu}}e^{-\frac{1}{2}\vec{k}^T C \vec{k}}\int d^nt e^{-\frac{1}{2}[\vec{t}+i\sqrt{C}\vec{k}]^2}
 \end{gather*}
-A final substitution $\bf{y}=\bf{t}+i\sqrt{C}\bf{k}$ leads to 
+A final substitution $\vec{y}=\vec{t}+i\sqrt{C}\vec{k}$ leads to 
 \begin{gather*}
-    \phi(\bf{k}) = A\sqrt{\det{C}} e^{-i\bf{k}\cdot \bf{\mu}}e^{-\frac{1}{2}\bf{k}^T C \bf{k}}\int d^ny e^{-\frac{1}{2}y^2}
+    \phi(\vec{k}) = B\sqrt{\det{C}} e^{-i\vec{k}\cdot \vec{\mu}}e^{-\frac{1}{2}\vec{k}^T C \vec{k}}\int d^ny e^{-\frac{1}{2}y^2}
 \end{gather*}
 But the integral in the latter is equal to $(2\pi)^{N/2}$, and therefore it cancels out with the term
-$A\sqrt{\det{C}}=(2\pi)^{-N/2}$. So we're left with 
+$B\sqrt{\det{C}}=(2\pi)^{-N/2}$. So we're left with 
 \begin{gather*}
-    \phi(\bf{k}) = e^{-i\bf{k}\cdot \bf{\mu}}e^{-\frac{1}{2}\bf{k}^T C \bf{k}}
+    \phi(\vec{k}) = e^{-i\vec{k}\cdot \vec{\mu}}e^{-\frac{1}{2}\vec{k}^T C \vec{k}}
 \end{gather*}
 which is again the expected result.
 
@@ -136,33 +144,33 @@ previous section, since $\det{R(\theta)}=1$ $\forall \theta$.
 We choose R so to make the inverse of the covariance matrix diagonal $R^T C^{-1} R = \Lambda$.
 
 So let's start again from the point where we've already made the shift of 
-coordinates, introducing $\bf{u} = \bf{x}-\bf{\mu}$:
+coordinates, introducing $\vec{u} = \vec{x}-\vec{\mu}$:
 \begin{equation*}
-    \phi(\bf{k})= \int d^n u A \exp{\left[ -\frac{1}{2}\bf{u}^TC^{-1}\bf{u} - i\bf{k}^T(\bf{u}+\bf{\mu}) \right]}
+    \phi(\vec{k})= \int d^N u B \exp{\left[ -\frac{1}{2}\vec{u}^TC^{-1}\vec{u} - i\vec{k}^T(\vec{u}+\vec{\mu}) \right]}
 \end{equation*}
-Now we set $\bf{u} = R\bf{y}$
+Now we set $\vec{u} = R\vec{y}$
 \begin{gather*}
-    \phi(\bf{k})= \int d^n y A \exp{\left[ -\frac{1}{2}\bf{y}^T R^T C^{-1} R\bf{y} - i\bf{k}^T(R\bf{y}+\bf{\mu}) \right]} = \\
-    = \int d^n y A \exp{\left[ -\frac{1}{2}\bf{y}^T \Lambda \bf{y} - i\bf{k}^T R \bf{y} -i \bf{k}^T\bf{\mu} \right]}
+    \phi(\vec{k})= \int d^N y B \exp{\left[ -\frac{1}{2}\vec{y}^T R^T C^{-1} R\vec{y} - i\vec{k}^T(R\vec{y}+\vec{\mu}) \right]} = \\
+    = \int d^N y B \exp{\left[ -\frac{1}{2}\vec{y}^T \Lambda \vec{y} - i\vec{k}^T R \vec{y} -i \vec{k}^T\vec{\mu} \right]}
 \end{gather*}
-Now we better define $\bf{z} = \bf{k}^T R$, so that 
+Now we better define $\vec{z} = \vec{k}^T R$, so that 
 \begin{gather*}
-    \phi(\bf{k})= \int d^n y A \exp{\left[ \sum_i(\frac{1}{2}\lambda_iy_i^2-h_iy_i) -i \bf{k}^T\bf{\mu} \right]} \\
-    = A \exp{-i\bf{k}\cdot \bf{\mu}} \int d^ny \Pi_i \exp{\left[-\frac{1}{2}\lambda_i y_i^2 -z_i y_i\right]}  
+    \phi(\vec{k})= \int d^N y B \exp{\left[ \sum_i(\frac{1}{2}\lambda_iy_i^2-h_iy_i) -i \vec{k}^T\vec{\mu} \right]} \\
+    = B \exp{-i\vec{k}\cdot \vec{\mu}} \int d^ny \Pi_i \exp{\left[-\frac{1}{2}\lambda_i y_i^2 -z_i y_i\right]}  
 \end{gather*}
 And we proceed again by completing the square:
 \begin{gather*}
-    \phi(\bf{k}) = A \exp{-i\bf{k}\cdot \bf{\mu}} \Pi_i \int d^ny \exp{\left[-\left(\sqrt{\frac{\lambda_i}{2}}y_i + \frac{z_i}{\sqrt{2\lambda_i}}\right)^2 \right]} \exp{\frac{z_i^2}{2\lambda_i}} =  \\
-    = A \exp{\left[-i\bf{k}\cdot\bf{\mu} \right]} \Pi_i \sqrt{\frac{2}{\lambda_i}}(2\pi)^{1/2}\exp{\frac{h_i^2}{2\lambda_i}}
+    \phi(\vec{k}) = B \exp{-i\vec{k}\cdot \vec{\mu}} \Pi_i \int d^ny \exp{\left[-\left(\sqrt{\frac{\lambda_i}{2}}y_i + \frac{z_i}{\sqrt{2\lambda_i}}\right)^2 \right]} \exp{\frac{z_i^2}{2\lambda_i}} =  \\
+    = B \exp{\left[-i\vec{k}\cdot\vec{\mu} \right]} \Pi_i \sqrt{\frac{2}{\lambda_i}}(2\pi)^{1/2}\exp{\frac{h_i^2}{2\lambda_i}}
 \end{gather*}
-Remember $A=(2\pi)^{-N/2}(\det{C})^{-1/2}$, and $\det{C}^{-1/2}=\Pi_i\sqrt{\lambda_i}$ using eigenvalues.
+Remember $B=(2\pi)^{-N/2}(\det{C})^{-1/2}$, and $\det{C}^{-1/2}=\Pi_i\sqrt{\lambda_i}$ using eigenvalues.
 \begin{gather*}
-    \phi(\bf{k}) = (2\pi)^{-N/2} \Pi_i\sqrt{\lambda_i} \exp{-i\bf{k}\cdot \bf{\mu}} (2\pi)^{N/2} \Pi_i \sqrt{\lambda_i} \sqrt{\frac{2}{\lambda_i}}\exp{\frac{z_i^2}{2\lambda_i}} \\
-    = \exp{\left[-i\bf{k}\cdot \bf{\mu}\right]} \Pi_i \exp{\left[\frac{z_i^2}{2\lambda_i}\right]} = \exp{\left[-i\bf{k}\cdot \bf{\mu}\right]} \exp{\left[-\frac{\bf{k}^TR\Lambda^{-1} R^T\bf{k}}{2}\right]}
+    \phi(\vec{k}) = (2\pi)^{-N/2} \Pi_i\sqrt{\lambda_i} \exp{-i\vec{k}\cdot \vec{\mu}} (2\pi)^{N/2} \Pi_i \sqrt{\lambda_i} \sqrt{\frac{2}{\lambda_i}}\exp{\frac{z_i^2}{2\lambda_i}} \\
+    = \exp{\left[-i\vec{k}\cdot \vec{\mu}\right]} \Pi_i \exp{\left[\frac{z_i^2}{2\lambda_i}\right]} = \exp{\left[-i\vec{k}\cdot \vec{\mu}\right]} \exp{\left[-\frac{\vec{k}^TR\Lambda^{-1} R^T\vec{k}}{2}\right]}
 \end{gather*}
 but $R \Lambda^{-1} R^T = C$, so finally 
 \begin{gather*}
-    \phi(\bf{k}) = \exp{\left[-i\bf{k}\cdot\bf{\mu}-\frac{1}{2}\bf{k}^TC\bf{k}\right]}
+    \phi(\vec{k}) = \exp{\left[-i\vec{k}\cdot\vec{\mu}-\frac{1}{2}\vec{k}^TC\vec{k}\right]}
 \end{gather*}
 which is the result we wanted to achieve.
 
@@ -187,10 +195,10 @@ covariance of two components $x_{\alpha}$ and $x_{\beta}$.
 For the first step, we try to compute the derivative in the RHS of 
 \ref{eqn:generation} for $n_{\alpha}=1$ and $n_{\gamma}=0$ 
 $\forall \gamma \neq \alpha$. Therefore 
-\begin{gather*}
+\begin{gather}
     \label{eqn:der}
     \frac{\partial \phi(\vec{k})}{\partial(-ik_{\alpha})}\Big|_{\vec{k}=0} = i \frac{\partial \phi(\vec{k})}{\partial k_{\alpha}}\Big|_{\vec{k}=0} = i \left[T_{\alpha}\phi(\vec{k})\right]\Big|_{\vec{k}=0}
-\end{gather*}
+\end{gather}
 where $T_{\alpha}$ is the internal derivative, meaning the derivative of the 
 exponent with respect to $k_{\alpha}$.
 \begin{gather*}
@@ -236,32 +244,32 @@ which is the correct result.
 
 \section{Exercise 6}
 The idea here is proving that the characteristic function we derived is again Gaussian-shaped.
-So we will just integrate $\phi(\bf{k})$ over the frequency space and hope
+So we will just integrate $\phi(\vec{k})$ over the frequency space and hope
 we get a simple constant.
 \begin{equation*}
-    \int d^nk \exp{\left[-i\bf{k}\cdot\bf{\mu}-\frac{1}{2}\bf{k}^TC\bf{k}\right]}
+    \int d^nk \exp{\left[-i\vec{k}\cdot\vec{\mu}-\frac{1}{2}\vec{k}^TC\vec{k}\right]}
 \end{equation*}
 Again we complete the square of the exponent by applying \ref{eqn:square_completion}.
 This time 
 \begin{gather*}
     \begin{cases}
-        \bf{m} = -iC^{-1}\bf{\mu} \\
+        \vec{m} = -iC^{-1}\vec{\mu} \\
         n = \mu^TC^{-1}\mu
     \end{cases}
 \end{gather*}
 and the exponent becomes
 \begin{gather*}
-    -i\bf{k}\cdot\bf{\mu}-\frac{1}{2}\bf{k}^TC\bf{k} = (\bf{k}-iC^{-1}\bf{\mu})^TC (\bf{k}-iC^{-1}\bf{\mu}) + \mu^T C^{-1}\bf{\mu}
+    -i\vec{k}\cdot\vec{\mu}-\frac{1}{2}\vec{k}^TC\vec{k} = (\vec{k}-iC^{-1}\vec{\mu})^TC (\vec{k}-iC^{-1}\vec{\mu}) + \mu^T C^{-1}\vec{\mu}
 \end{gather*}
 Therefore, the integral becomes 
 \begin{gather*}
-    \int d^nk \exp{\left[-i\bf{k}\cdot\bf{\mu}-\frac{1}{2}\bf{k}^TC\bf{k}\right]} = \int d^nk \exp{\left[-\frac{1}{2}\left(\bf{k}^TC\bf{k} + 2 i\bf{k}\cdot\bf{\mu} \right)\right]} =\\ 
-    = \exp{\left[-\frac{1}{2}\left(\mu^T C^{-1}\mu\right) \right]}\int d^n k \exp{\left[-\frac{1}{2}(\bf{k}-iC^{-1}\bf{\mu})^TC (\bf{k}-iC^{-1}\bf{\mu})\right]}
+    \int d^nk \exp{\left[-i\vec{k}\cdot\vec{\mu}-\frac{1}{2}\vec{k}^TC\vec{k}\right]} = \int d^nk \exp{\left[-\frac{1}{2}\left(\vec{k}^TC\vec{k} + 2 i\vec{k}\cdot\vec{\mu} \right)\right]} =\\ 
+    = \exp{\left[-\frac{1}{2}\left(\mu^T C^{-1}\mu\right) \right]}\int d^N k \exp{\left[-\frac{1}{2}(\vec{k}-iC^{-1}\vec{\mu})^TC (\vec{k}-iC^{-1}\vec{\mu})\right]}
 \end{gather*}
 Now inside the integral there is clearly a Gaussian with mean $iC^{-1}\mu$. So the integral
-is equal to $(2\pi)^{n/2}(\det{C})^{-\frac{1}{2}}$.
+is equal to $(2\pi)^{N/2}(\det{C})^{-\frac{1}{2}}$.
 \begin{gather*}
-    \int d^nk \exp{\left[-i\bf{k}\cdot\bf{\mu}-\frac{1}{2}\bf{k}^TC\bf{k}\right]} = \exp{\left[-\frac{1}{2}\mu^T C^{-1}\mu \right]} (2\pi)^{n/2}(\det{C})^{-\frac{1}{2}}
+    \int d^nk \exp{\left[-i\vec{k}\cdot\vec{\mu}-\frac{1}{2}\vec{k}^TC\vec{k}\right]} = \exp{\left[-\frac{1}{2}\mu^T C^{-1}\mu \right]} (2\pi)^{N/2}(\det{C})^{-\frac{1}{2}}
 \end{gather*}
 which is simply a constant quantity. We have thus proved that the characteristic
 function is an unnormalised Gaussian function.
