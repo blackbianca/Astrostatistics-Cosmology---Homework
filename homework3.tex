@@ -1,0 +1,286 @@
+\documentclass[a4paper,11pt,fleqn]{article}
+\usepackage[utf8]{inputenc}
+%\usepackage[italian]{babel}
+%\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{multirow}
+\usepackage{hyphenat}
+\usepackage{sectsty}
+\usepackage{amsmath}
+\usepackage{amssymb}
+%\usepackage{subfigure}
+%\usepackage{color}
+\usepackage{hyperref}
+
+
+\title{Homework 3}
+\author{Alessandro Bianchetti}
+
+\begin{document}
+\maketitle
+
+\section{Exercise 8}
+We want to show which is the most general form of Least Squares $\chi^{(2)}$
+estimate: let's define the quantities in the game first. We assume we are 
+working at a experiment that yields a data vector $\vec{d}=(d_1 \dotsc d_N)$: 
+the average of the data is given by 
+\begin{equation}
+    \langle \vec{d} \rangle = \sum_{i=1}^M A_i \vec{t}_i = \vec{A}^TT    
+\end{equation}
+where $\vec{t}_i$ are a set of vectors whose linear combination is an 
+estimate for the dataset, with coefficients $A_i$. $T$ is the MxN matrix 
+grouping all the template vectors, while $\vec{A}$ is a M size vector. 
+At this point, we assume data follow a Gaussian distribution with fixed 
+covariance $C$, so we're enabled to build a $\chi^{(2)}$-like variable.
+\begin{equation}
+    \chi^{(2)}=(\vec{d}-\vec{A}^TT)^T C^{-1}(\vec{d}-\vec{A}^TT)
+\end{equation} 
+Our task is to minimize this quantity with respect to $\vec{A}$ in order to 
+find the best estimates for the linear coefficients. We must thus perform 
+a simple derivative $\frac{\partial \chi^{(2)}}{\partial A_l}$, but before 
+starting with all the compulations we define a support variable 
+$\vec{u} = \sum_jA_j\vec{t}_j$ or $u_i = \sum_j A_j T_{ij}$. If we 
+introudce this new variable, then 
+\begin{equation}
+    \label{eqn:der}
+    \frac{\partial \chi^{(2)}}{\partial A_l} = \sum_i \frac{\partial \chi^{(2)}}{\partial u_i}\frac{\partial u_i}{\partial A_l}
+\end{equation}
+The second derivative factor is pretty easy
+\begin{equation*}
+    \frac{\partial u_i}{\partial A_l} = \frac{\partial }{\partial A_l} \sum_j A_j T_{ij} = T_{il} 
+\end{equation*}
+while for the other one we have 
+\begin{gather*}
+    \frac{\partial \chi^{(2)}}{\partial u_i} = \frac{\partial}{\partial u_i}\left[\sum_{mn}(d_m-u_m)C^{-1}_{mn}(d_n-u_n)\right] = \\ 
+    = \sum_{mn}\delta_{mi}C^{-1}_{mn}(d_n-u_n) + \sum_{mn}(d_m-u_m)C^{-1}_{mn}\delta_{ni} = \\ 
+    = \sum_{n}C^{-1}_{in}(d_n-u_n) + \sum_{m}(d_m-u_m)C^{-1}_{mi} = 2\sum_n C^{-1}_{in}(d_n-u_n) 
+\end{gather*}
+where we exploited the symmetry of C. So overall, according to \ref{eqn:der}
+\begin{equation*}
+    \frac{\partial \chi^{(2)}}{\partial A_l} = -2 \sum_{in}T_{il}C^{-1}_{in}(d_n-u_n)
+\end{equation*}
+Now it's a matter of setting the latter equation to 0, so we can forget about 
+the $-2$ factor before the sum: it's also the right 
+moment to explicit the expression of $u_n$, which was hidding $\vec{A}$
+until now.
+\begin{gather*}
+    \sum_{in}T_{il}C^{-1}_{in}(d_n-\sum_j A_j T_{jn}) = 0 \\
+    \Rightarrow \sum_{in}T_{il}C^{-1}d_n = \sum_{ijn}T_{il}C^{-1}T_{jn}A_j
+\end{gather*}
+This means, in terms of matrices
+\begin{equation}
+    TC^{-1}\vec{d}=TC^{-1}T\vec{A} \qquad \Rightarrow \qquad A = (TC^{-1}T)^{-1}TC^{-1}\vec{d}
+\end{equation}
+The latter is the most general form of a Least Squares (GLS) estimate, 
+descending from a $\chi^{(2)}$ minimization, thus relating to a very specific 
+case where we assume Gaussian behaviour for the dataset and a linear dependece 
+of the mean on the parameters. In this case, both these requirements are 
+fulfilled, therefore such minimization can be trusted.
+
+\medskip
+
+As a final conclusion, we should also check that the point we selected is actually a minimum: to 
+do that we need to evaluate the second derivative 
+\begin{equation*}
+    \frac{\partial \chi^{(2)}}{\partial A_l \partial A_k} = \frac{\partial}{\partial A_k}\left[-2 \sum_{in}T_{il}C^{-1}_{in}(d_n-\sum_j A_j T_{jn})\right]\\ 
+    = 2\sum_{in}T_{il}C^{-1}_{in}T_{kn}
+\end{equation*}
+and since C is positively defined, this quantity is always positive. The 
+extreme point we found must be a minimum.
+
+\section{Exercise 9}
+We want to test the estimator we derived in the previous exercise in a
+plausible experimental situation. 
+
+\section{Exercise 10}
+In this exercise we consider a n-dimensional dataset where each measurement 
+$d_i$ is taken at the coordinate $\vec{x}_i$. We model the average with 
+a linear combination of cooridnates, properly weighted by coefficients:
+\begin{equation*}
+    \langle d_i \rangle = s\beta_0 + \sum_{j=1}^p \beta_j x_{ij}
+\end{equation*}
+We also assume a zero-average, uncorrelated, Gaussian noise $\epsilon_i \in \mathcal{N}(0,\sigma^2)$.
+If we assumed uniform priors on the coefficients, we know that MAP reduces 
+to least squares fitting. It's a matter of minimizing the following quantity 
+\begin{equation}
+    RSS = \sum_{i=1}^n (d_i - \beta_0 -\sum_j \beta_j x_{ij})^2
+\end{equation}
+which actually descends from the intention of maximizing a likelihood of 
+the form $e^{-RSS}$.
+What happens if we decide to tackle the problem in a Bayesian sense and 
+assume a non-uniform prior? Let's see a couple of cases. Remember that 
+the posterior proportial to the likelihood times the prior, regardless 
+of the normalizing coefficients and of the probability distribution of 
+the data.
+\begin{equation}
+    \label{eqn:post}
+    p(\beta_i|d_i) \propto p(d_i|\beta_i)p(\beta_i)
+\end{equation}
+In any case, we will assume all the parameters $\beta_i$ are \textit{iid} 
+(independent identically distributed), meaning that they're independent 
+(thus having diagonal covariance) but they follow the exact same 
+distribution .
+
+
+
+\subsection{Exponential prior}
+We first try out an exponential distribution, properly normalised.
+\begin{equation}
+    p(\beta_i) = \frac{1}{2b}e^{-\frac{\beta_i}{b}}
+\end{equation}
+According to \ref{eqn:post}, the posterior can be quantified as 
+\begin{gather*}
+    p(\beta |\vec{d}) \propto e^{-\frac{1}{2\sigma^2}\sum_i (d_i-\beta_0-\sum_j \beta_j x_{ij})^2}e^{-\sum_i \frac{|\beta_i|}{b}} \\
+    p(\beta |\vec{d}) \propto e^{-\frac{1}{2\sigma^2}\sum_i (d_i-\beta_0-\sum_j \beta_j x_{ij})^2-\sum_i \frac{|\beta_i|}{b}} \\
+    p(\beta |\vec{d}) \propto e^{-\frac{1}{2\sigma^2}RSS-\sum_i \frac{|\beta_i|}{b}}
+\end{gather*}
+Maximizing this posterior is equivalent to minimizing the exponent changed of 
+sign, thus the best estimates for the parameters $\beta_i$ are given by 
+\begin{equation}
+    \hat{\vec{\beta}} = \min{\left\{RSS + \frac{2\sigma^2}{b}\sum_i|\beta_i|\right\}}
+\end{equation}
+
+\subsection{Gaussian prior}
+We can alternatively assume the candidate distribution for $\beta_i$ is 
+Gaussian with variance $c$ and zero average.
+\begin{equation}
+    p(\beta_i) \propto e^{-\frac{1}{2c}\sum_i \beta_i^2}
+\end{equation}
+This time
+\begin{gather*}
+    p(\beta |\vec{d}) \propto e^{-\frac{1}{2\sigma^2}\sum_i (d_i-\beta_0-\sum_j \beta_j x_{ij})^2-\frac{1}{2c}\sum_i \beta_i^2} \\
+    p(\beta |\vec{d}) \propto e^{-\frac{1}{2\sigma^2} RSS -\frac{1}{2c}\sum_i \beta_i^2}
+\end{gather*}
+Therefore 
+\begin{equation}
+    \hat{\vec{\beta}} = \min{\left\{RSS + \frac{\sigma^2}{c}\sum_j \beta_j^2\right\}}
+\end{equation}
+
+
+
+\section{Exercise 12}
+Say we have a data time series $D=\{d_1=d(t_1)\dotsc d_n=d(t_n)\}$, where 
+the data are evenly spread, meaning time intervals are regular: 
+$t_{i+1}-t_i = \Delta$ $ \forall i$. Say the data are all independent and 
+that they can be modeled by a time-dependent sinusoidal signal $f(t)$ and 
+a gaussian, zero average noise with fixed variance ( $n_i \in \mathcal{N}(0,\sigma^2)$).
+\begin{equation}
+    d_i = f(t_i)+n_i = B_1\cos(\omega t_i) + B_2 \sin(\omega t_i) + n_i
+\end{equation}
+Say our goal is to infer the unknown parameters $\omega, B_1, B_2$ and 
+assume we work in the large frequency limit.
+
+\subsection{Likelihood}
+Let's start by writing a suitable form for the likelihood 
+$\mathcal{L}(D|\omega, B_1, B_2)$. We assume a normalised Gaussian bell 
+and write 
+\begin{equation}
+    \mathcal{L}(D|\omega, B_1, B_2) = (2\pi\sigma^2)^{-N/2}e^{-\frac{1}{2\sigma^2}\sum_i(d_i-B_1 \cos(\omega t_i)-B_2 \sin(\omega t_i))^2}
+\end{equation}
+We now define $Q = \sum_i(d_i-B_1 \cos(\omega t_i)-B_2 \sin(\omega t_i))^2$ and we show 
+that this term can be explicited and simplified a bit. Also, in order to 
+shrink notation, we set $c_i = \cos(\omega t_i)$ and $s_i = \sin(\omega t_i)$.
+Now, expand Q by opening the square:
+\begin{gather*}
+    Q = \sum_i (d_i^2 + B_1^2 c_i^2 + B_2^2 s_i^2 -2B_1d_ic_i -2B_2d_is_i +2B_1B_2c_is_i) \\
+    = N\bar{d^2}+B_1^2\sum_ic_i^2+B_2^2\sum_is_i^2 -2[B_1\sum_id_ic_i +B_2\sum_id_is_i]+2B_1B_2\sum_ic_is_i
+\end{gather*}
+It can be proven that in the high frequency limit the last term 
+can be neglected: let's show this immediately. First, we recall 
+$\sin(2\alpha) = 2\sin(\alpha)\cos(\alpha)$.
+\begin{gather*}
+    2\sum_is_ic_i = \sum_i\sin(2\omega t_i)
+\end{gather*}
+Then we transit in the continuous time regime, substituting the discrete sum 
+with an integral
+\begin{gather*}
+    \sum_i\sin(2\omega t_i) = \frac{1}{t_N-t_1}\int_{t_1}^{t_N}\sin(2\omega t) dt = \frac{1}{N\Delta} \frac{1}{2\omega}\left[-\cos(2\omega t)\right]_{t_1}^{t_N}
+\end{gather*} 
+We must immediately notice that $\sum_ic_is_i\propto (\omega\Delta)^{-1}$, 
+and since we're working with high frequencies $\omega\Delta >> 1$, allowing 
+to neglect the term under exam.
+
+Now provide the following definitions: $\sum_ic_i^2 = c$, $\sum_is_i^2 = s$, 
+$\sum_i d_i c_i = R(\omega)$, $\sum_i d_i s_i = I(\omega)$. 
+Thanks to these new definitions and neglecting the last sum, we get 
+\begin{equation}
+    Q = N\bar{d^2}+B_1^2c+B_2^2s -2[B_1R(\omega) +B_2I(\omega)]
+\end{equation}
+
+
+\subsection{$\omega$-independent terms}
+See that we did not specify the $\omega$ dependance on $c$ and $s$, as 
+in first approximation they are independent on frequency. To show this, 
+we make use of the continuous approximation again, together with the high 
+frquency limit. 
+\begin{gather*}
+    s = \sum_i \sin^2(\omega t_i)\approx \frac{1}{N\Delta}\int_{t_1}^{t_N} \sin^2(\omega t)dt =\\
+    = \frac{1}{2N\Delta} \int_{t_1}^{t_N}(1-\cos(2\omega t))dt = \frac{1}{2N}-\frac{1}{2N \Delta \cdot 2\omega}[\sin(2\omega t)]_{t_1}^{t_N}\approx \frac{1}{2N}
+\end{gather*}
+\begin{gather*}
+    c = \sum_i \cos^2(\omega t_i)\approx \frac{1}{N\Delta}\int_{t_1}^{t_N} \cos^2(\omega t)dt =\\
+    = \frac{1}{2N\Delta} \int_{t_1}^{t_N}(\cos(2\omega t)-1)dt = -\frac{1}{2N}+\frac{1}{2N \Delta \cdot 2\omega}[\sin(2\omega t)]_{t_1}^{t_N}\approx -\frac{1}{2N}
+\end{gather*}
+Therefore we can treat $s$ and $c$ as $\omega$-independent terms.
+
+\subsection{MAP for a uniform prior}
+We now have an expression for the likelihood, and if we assume uniform priors, 
+than the posterior is actually proportional to the likelihood: Bayesian 
+treatment and frequentist approach kind of overlap. 
+\begin{equation}
+    p(\omega, B_1, B_2|D) \propto \mathcal{L}(D|\omega, B_1, B_2) \propto e^{-\frac{1}{2\sigma^2}Q}
+\end{equation}
+Since our target parameter is $\omega$, we treat $B_1$ and $B_2$ as nuisance 
+parameters. In order to get rid of them, we want to marginalize the 
+posterior over their domains. Since we're talking about amplitudes, we can 
+reasonably take the interval $[0,\infty]$ as a domain. 
+\begin{equation}
+    p(\omega|D) = \int_0^{\infty} \int_0^{\infty}  p(\omega, B_1, B_2|D) dB_1dB_2
+\end{equation}
+Note that, within $Q$, the term $N\bar{d^2}$ is independent on these 
+amplitudes, therefore can be factored out of the integral as a constant.
+At this point, let's explicit the interesting dependences of the exponent 
+and solve it like a Gaussian integral.
+\begin{gather*}
+    p(\omega|D) \propto \int_0^{\infty} \int_0^{\infty}   e^{-\frac{1}{2\sigma^2}[B_1^2c + B_2^2 s -2(B_1R(\omega)+B_2I(\omega))]}dB_1dB_2 = \\
+    = \int_0^{\infty}e^{-\frac{1}{2\sigma^2}(B_1^2c-2B_1R(\omega))}dB_1 \int_0^{\infty}e^{-\frac{1}{2\sigma^2}(B_2^2s-2B_2I(\omega))}dB_2
+\end{gather*}
+We now proceed with a square completion, adding and subtracting the term 
+$\frac{1}{2\sigma^2}\frac{R^2}{c}$ in the exponent of the first integral and $\frac{1}{2\sigma^2}\frac{I^2}{s}$ in the second one.
+\begin{gather*}
+    p(\omega|D) \propto \left[\int_0^{\infty}e^{-\frac{1}{2\sigma^2}(B_1^2c-2B_1R(\omega)+\frac{R^2}{c})}dB_1 \int_0^{\infty}e^{-\frac{1}{2\sigma^2}(B_2^2s-2B_2I(\omega))+\frac{I^2}{s})}dB_2\right] e^{\frac{1}{2\sigma^2}\left(\frac{R^2}{c}+\frac{I^2}{s}\right)} =\\
+    = \left[\int_0^{\infty} e^{-\frac{1}{2}\left(\frac{B_1\sqrt{c}-R/\sqrt{c}}{\sigma}\right)^2 }dB_1 \int_0^{\infty} e^{-\frac{1}{2}\left(\frac{B_2\sqrt{s}-I/\sqrt{s}}{\sigma}\right)^2 }dB_2\right] e^{\frac{1}{2\sigma^2}\left(\frac{R^2}{c}+\frac{I^2}{s}\right)} = \\
+    = \frac{1}{2}\sqrt{\frac{2\pi\sigma^2}{c}} \cdot \frac{1}{2}\sqrt{\frac{2\pi\sigma^2}{s}}e^{\frac{1}{2\sigma^2}\left(\frac{R^2}{c}+\frac{I^2}{s}\right)}
+\end{gather*}
+So overall
+\begin{equation}
+    p(\omega|D) \propto \frac{1}{\sqrt{cs}} e^{\frac{1}{2\sigma^2}\left(\frac{R^2}{c}+\frac{I^2}{s}\right)}
+\end{equation}
+
+\subsection{Maximum A Posteriori estimate}
+We want to prove that the $\omega$ value that maximizes the obtained 
+posterior is the same that maximizes the Fourier transform of the power 
+spectrum of the signal, called \textit{periodogram} $C(\omega)$.
+\begin{equation}
+    C(\omega) = \frac{2}{N} \Big| \sum_{k=1}^N d_k e^{-i\omega t_k}\Big|^2
+\end{equation}
+Let's first try to understand which is the condition to fulfill in order 
+to maximize $p(\omega|D)$. Since it has an exponential behaviour, it is 
+required we maximize its exponent, which is $R^2/c + I^2/s$. However,
+we proved that $c\approx s$ in the high frequency limit, so we actually 
+need to maximize just $R^2+I^2$.
+\begin{equation}
+    \label{eqn:max}
+    \hat{\omega} = argmax\left\{p(\omega|D)\right\} = argmax\left\{R^2(\omega)+I^2(\omega)\right\}
+\end{equation}
+Let's check whether this condition is the same for the periodogram. 
+\begin{gather*}
+    C(\omega) = \frac{2}{N} \Big| \sum_{k=1}^N d_k e^{-i\omega t_k}\Big|^2 = \frac{2}{N} \Big| \sum_{k=1}^N d_k \cos(\omega t_k) -i \sum_{k=1}^N d_k \sin(\omega t_k) \Big|^2 = \\
+    = \frac{2}{N} \left[\left(\sum_k d_k \cos(\omega t_k)\right)^2 + \left(\sum_k d_k \sin(\omega t_k)\right)^2\right] = \frac{2}{N}\left[R^2(\omega)+I^2(\omega)\right] 
+\end{gather*}
+So clearly, the maximization condition on $C(\omega)$ is the same we identified 
+for the posterior distribution \ref{eqn:max}.
+
+
+\end{document}
