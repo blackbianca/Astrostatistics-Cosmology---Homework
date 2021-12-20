@@ -107,7 +107,7 @@ to least squares fitting. It's a matter of minimizing the following quantity
     RSS = \sum_{i=1}^n (d_i - \beta_0 -\sum_j \beta_j x_{ij})^2
 \end{equation}
 which actually descends from the intention of maximizing a likelihood of 
-the form $e^{-RSS}$.
+the form $e^{-\frac{1}{2\sigma^2}RSS}$.
 What happens if we decide to tackle the problem in a Bayesian sense and 
 assume a non-uniform prior? Let's see a couple of cases. Remember that 
 the posterior proportial to the likelihood times the prior, regardless 
