@@ -31,7 +31,7 @@ the average of the data is given by
 where $\vec{t}_i$ are a set of vectors whose linear combination is an 
 estimate for the dataset, with coefficients $A_i$. $T$ is the MxN matrix 
 grouping all the template vectors, while $\vec{A}$ is a M size vector. 
-At this point, we assume data follow a Gaussian distribution with fixed 
+At this point, we assume data follows a Gaussian distribution with fixed 
 covariance $C$, so we're enabled to build a $\chi^{(2)}$-like variable.
 \begin{equation}
     \chi^{(2)}=(\vec{d}-\vec{A}^TT)^T C^{-1}(\vec{d}-\vec{A}^TT)
@@ -134,7 +134,7 @@ $(TC^{-1}T)$.
         \sum_i \frac{x_i}{\sigma_i^2} & \sum_i \frac{1}{\sigma_i^2}
     \end{pmatrix}
 \end{gather*}
-We need the inverse of that: since this is a 2x2 matrix, we can use the 
+We need to invert the latter: since it is a 2x2 matrix, we can use the 
 quick formula 
 \begin{equation}
     M^{-1} = 
@@ -192,7 +192,7 @@ Finally,
     \end{pmatrix}
 \end{gather*}
 And we now have all the elements to build the vector $\vec{A}$, yielding the 
-target parameters.
+desired parameters.
 \begin{gather*}
     \vec{A} = (TC^{-1}T)^{-1}TC^{-1}\vec{d} = \frac{1}{\Delta}
     \begin{pmatrix}
@@ -217,8 +217,8 @@ In other words, slope and offset of the weighted linear fit are given by
 \end{equation}
 Lastly, we can compute the variance of the parameters, in order to quantify
 the errorbars that we can assign to the parameter estimators. To do that, 
-we need to explicitly compute $Cov(A) = Cov((TC^{-1}T)^{-1}TC^{-1}\vec{d})$
-Remember that the variance is a non-linear function: we need to make use of 
+we need to explicitly compute $Cov(A) = Cov((TC^{-1}T)^{-1}TC^{-1}\vec{d})$.
+Remember that variance is a non-linear function: we need to make use of 
 the property 
 \begin{equation}
     Cov(K\vec{y}) = KCov(\vec{y})K^T
@@ -249,13 +249,14 @@ off-diagonal terms.
 \section{Exercise 10}
 In this exercise we consider a n-dimensional dataset where each measurement 
 $d_i$ is taken at the coordinate $\vec{x}_i$. We model the average with 
-a linear combination of cooridnates, properly weighted by coefficients:
+a linear combination of coordinates, properly weighted by coefficients:
 \begin{equation*}
-    \langle d_i \rangle = s\beta_0 + \sum_{j=1}^p \beta_j x_{ij}
+    \langle d_i \rangle = \beta_0 + \sum_{j=1}^p \beta_j x_{ij}
 \end{equation*}
 We also assume a zero-average, uncorrelated, Gaussian noise $\epsilon_i \in \mathcal{N}(0,\sigma^2)$.
-If we assumed uniform priors on the coefficients, we know that MAP reduces 
-to least squares fitting. It's a matter of minimizing the following quantity 
+If we assumed uniform priors on the coefficients, and since the above 
+equation is linear in the parameters, we know that MAP reduces to least squares fitting. 
+It's a matter of minimizing the following quantity 
 \begin{equation}
     RSS = \sum_{i=1}^n (d_i - \beta_0 -\sum_j \beta_j x_{ij})^2
 \end{equation}
@@ -298,7 +299,7 @@ sign, thus the best estimates for the parameters $\beta_i$ are given by
 We can alternatively assume the candidate distribution for $\beta_i$ is 
 Gaussian with variance $c$ and zero average.
 \begin{equation}
-    p(\beta_i) \propto e^{-\frac{1}{2c}\sum_i \beta_i^2}
+    p(\beta_i) \propto e^{-\frac{1}{2c} \beta_i^2}
 \end{equation}
 This time
 \begin{gather*}
@@ -373,7 +374,7 @@ frquency limit.
 \end{gather*}
 \begin{gather*}
     c = \sum_i \cos^2(\omega t_i)\approx \frac{1}{N\Delta}\int_{t_1}^{t_N} \cos^2(\omega t)dt =\\
-    = \frac{1}{2N\Delta} \int_{t_1}^{t_N}(\cos(2\omega t)-1)dt = -\frac{1}{2N}+\frac{1}{2N \Delta \cdot 2\omega}[\sin(2\omega t)]_{t_1}^{t_N}\approx -\frac{1}{2N}
+    = \frac{1}{2N\Delta} \int_{t_1}^{t_N}(\cos(2\omega t)+1)dt = \frac{1}{2N}+\frac{1}{2N \Delta \cdot 2\omega}[\sin(2\omega t)]_{t_1}^{t_N}\approx \frac{1}{2N}
 \end{gather*}
 Therefore we can treat $s$ and $c$ as $\omega$-independent terms.
 
