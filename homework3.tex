@@ -70,6 +70,7 @@ until now.
 \end{gather*}
 This means, in terms of matrices
 \begin{equation}
+    \label{eqn:GLS}
     TC^{-1}\vec{d}=TC^{-1}T\vec{A} \qquad \Rightarrow \qquad A = (TC^{-1}T)^{-1}TC^{-1}\vec{d}
 \end{equation}
 The latter is the most general form of a Least Squares (GLS) estimate, 
@@ -91,7 +92,159 @@ extreme point we found must be a minimum.
 
 \section{Exercise 9}
 We want to test the estimator we derived in the previous exercise in a
-plausible experimental situation. 
+plausible experimental situation. Consider a dataset $\vec{d}$ of N 
+different measurements, taken at different coordinates $x_i$. We want to 
+fit the following linear model 
+\begin{equation}
+    \langle \vec{d}\rangle = \omega \vec{x} + \vec{b}
+\end{equation}
+where we assume Gaussian, uncorrelated noise. We want to find the MAP 
+estimates for the parameters $\omega$ and $b$, and then their covariance. 
+First, let's identify the matrices we will use as ingredients. $C^{-1}$ is 
+the inverse of the covariance of the data, which we assume to be diagonal 
+(uncorrelated signal). Being $C$ diagonal, $C^{-1}$ is diagonal too and the 
+entries are given simply by the reciprocal of the variance of each 
+measurement $(\sigma_i^2)^{-1}$. Then, $T$ is the matrix 
+gathering the template vectors, which in our case are just two: $\vec{x}$ and 
+$(1\dotsc1)$. So it's a 2xN matrix (M=2), where the the two vectors occupy 
+the rows of the matrix. The coefficients $\omega$ and $b$ respectively assigned to the 
+template vectors are the components of the vector $A$, gathering the 
+parameters we want to estimate. 
+We start from \ref{eqn:GLS} and apply to our case. First, let's work on 
+$(TC^{-1}T)$.
+\begin{gather*}
+    (TC^{-1}T) = 
+    \begin{pmatrix}
+        -\vec{x}- \\
+        1 \dotsc 1 \\
+    \end{pmatrix}
+    \begin{pmatrix}
+        (\sigma_1^2)^{-1} &  & 0\\
+        & \ddots & \\
+        0 & & (\sigma_N^2)^{-1} \\
+    \end{pmatrix}
+    \begin{pmatrix}
+        | & 1 \\
+        \vec{x} & \vdots \\
+        | & 1 \\
+    \end{pmatrix}
+    = \\ = 
+    \begin{pmatrix}
+        \sum_i \frac{x_i^2}{\sigma_i^2} & \sum_i \frac{x_i}{\sigma_i^2} \\
+        \sum_i \frac{x_i}{\sigma_i^2} & \sum_i \frac{1}{\sigma_i^2}
+    \end{pmatrix}
+\end{gather*}
+We need the inverse of that: since this is a 2x2 matrix, we can use the 
+quick formula 
+\begin{equation}
+    M^{-1} = 
+    \begin{pmatrix}
+        a & b \\
+        c & d \\
+    \end{pmatrix}^{-1}
+    = \frac{1}{\det M}
+    \begin{pmatrix}
+        d & -b \\
+        -c & a \\
+    \end{pmatrix}
+\end{equation}
+Thus, we get that 
+\begin{equation}
+    \label{eqn:cov_par}
+    (TC^{-1}T)^{-1} = \frac{1}{\Delta}
+    \begin{pmatrix}
+        \sum_i \frac{1}{\sigma_i^2} & -\sum_i \frac{x_i}{\sigma_i^2} \\
+        -\sum_i \frac{x_i}{\sigma_i^2} & \sum_i \frac{x_i^2}{\sigma_i^2} \\
+    \end{pmatrix}
+\end{equation}
+where 
+\begin{equation}
+    \Delta = \det(TC^{-1}T) = \left(\sum_i\frac{x_i^2}{\sigma_i^2}\right)\left(\sum_i\frac{1}{\sigma_i^2}\right)-\left(\sum_i\frac{x_i}{\sigma_i^2}\right)^2
+\end{equation}
+Then we have 
+\begin{gather*}
+    TC^{-1} = 
+    \begin{pmatrix}
+        -\vec{x}- \\
+        1 \dotsc 1 \\
+    \end{pmatrix}
+    \begin{pmatrix}
+        (\sigma_1^2)^{-1} &  & 0\\
+        & \ddots & \\
+        0 & & (\sigma_N^2)^{-1} \\
+    \end{pmatrix}
+    = 
+    \begin{pmatrix}
+        (\sigma_1^2)^{-1}x_1 & \dotsc & (\sigma_N^2)^{-1}x_N \\
+        (\sigma_1^2)^{-1} & \dotsc  & (\sigma_N^2)^{-1} \\
+    \end{pmatrix}
+\end{gather*}
+Finally, 
+\begin{gather*}
+    TC^{-1}\vec{d} = 
+    \begin{pmatrix}
+        (\sigma_1^2)^{-1}x_1 & \dotsc & (\sigma_N^2)^{-1}x_N \\
+        (\sigma_1^2)^{-1} & \dotsc  & (\sigma_N^2)^{-1} \\
+    \end{pmatrix} \vec{d} = 
+    \begin{pmatrix}
+        \sum_i \frac{x_i d_i}{\sigma_i^2} \\
+        \sum_i \frac{d_i}{\sigma_i^2} \\
+    \end{pmatrix}
+\end{gather*}
+And we now have all the elements to build the vector $\vec{A}$, yielding the 
+target parameters.
+\begin{gather*}
+    \vec{A} = (TC^{-1}T)^{-1}TC^{-1}\vec{d} = \frac{1}{\Delta}
+    \begin{pmatrix}
+        \sum_i \frac{1}{\sigma_i^2} & -\sum_i \frac{x_i}{\sigma_i^2} \\
+        -\sum_i \frac{x_i}{\sigma_i^2} & \sum_i \frac{x_i^2}{\sigma_i^2} \\
+    \end{pmatrix}
+    \begin{pmatrix}
+        \sum_i \frac{x_i d_i}{\sigma_i^2} \\
+        \sum_i \frac{d_i}{\sigma_i^2} \\
+    \end{pmatrix} = \\ = \frac{1}{\Delta}
+    \begin{pmatrix}
+        \left(\sum_i\frac{1}{\sigma_i^2}\right)\left(\sum_i\frac{x_i d_i}{\sigma_i^2}\right) - \left(\sum_i\frac{d_i}{\sigma_i^2}\right)\left(\sum_i\frac{x_i}{\sigma_i^2}\right) \\
+        \left(\sum_i\frac{d_i}{\sigma_i^2}\right) \left(\sum_i\frac{x_i^2}{\sigma_i^2}\right) - \left(\sum_i\frac{x_i}{\sigma_i^2}\right)\left(\sum_i\frac{x_i d_i}{\sigma_i^2}\right)
+    \end{pmatrix}
+\end{gather*}
+In other words, slope and offset of the weighted linear fit are given by 
+\begin{equation}
+    \begin{cases}
+        \omega = \frac{1}{\Delta} \left[\left(\sum_i\frac{1}{\sigma_i^2}\right)\left(\sum_i\frac{x_i d_i}{\sigma_i^2}\right) - \left(\sum_i\frac{d_i}{\sigma_i^2}\right)\left(\sum_i\frac{x_i}{\sigma_i^2}\right)\right] \\
+        b = \frac{1}{\Delta} \left[ \left(\sum_i\frac{d_i}{\sigma_i^2}\right) \left(\sum_i\frac{x_i^2}{\sigma_i^2}\right) - \left(\sum_i\frac{x_i}{\sigma_i^2}\right)\left(\sum_i\frac{x_i d_i}{\sigma_i^2}\right)\right] \\
+    \end{cases}
+\end{equation}
+Lastly, we can compute the variance of the parameters, in order to quantify
+the errorbars that we can assign to the parameter estimators. To do that, 
+we need to explicitly compute $Cov(A) = Cov((TC^{-1}T)^{-1}TC^{-1}\vec{d})$
+Remember that the variance is a non-linear function: we need to make use of 
+the property 
+\begin{equation}
+    Cov(K\vec{y}) = KCov(\vec{y})K^T
+\end{equation}
+where K is any constant matrix. In our case, 
+\begin{gather*}
+    Cov(A) =  Cov((TC^{-1}T)^{-1}TC^{-1}\vec{d}) = \\
+    = (TC^{-1}T)^{-1}TC^{-1}Cov(\vec{d})((TC^{-1}T)^{-1}TC^{-1})^T = \\
+    = (TC^{-1}T)^{-1}TC^{-1} C C^{-1}T(TC^{-1}T)^{-1} = \\ 
+    = (TC^{-1}T)^{-1} (TC^{-1}T) (TC^{-1}T)^{-1} = (TC^{-1}T)^{-1}
+\end{gather*}
+where we used the fact that $Cov(\vec{d})=C$ and $C^{-1}C=\mathbf{1}$.
+Therefore, the covariance matrix of slope and offset is given by 
+\ref{eqn:cov_par} and we can write 
+\begin{equation}
+    \begin{cases}
+        \sigma_{\omega} = \frac{1}{\Delta}\sum_i \frac{1}{\sigma_i^2} \\ 
+        \sigma_b = \frac{1}{\Delta}\sum_i \frac{x_i^2}{\sigma_i^2} \\
+    \end{cases}
+\end{equation}
+and the two parameters are also correlated, having the matrix non-zero 
+off-diagonal terms.
+
+
+
+
 
 \section{Exercise 10}
 In this exercise we consider a n-dimensional dataset where each measurement 
@@ -281,6 +434,18 @@ Let's check whether this condition is the same for the periodogram.
 \end{gather*}
 So clearly, the maximization condition on $C(\omega)$ is the same we identified 
 for the posterior distribution \ref{eqn:max}.
+
+\subsection{Least Squares Fitting}
+The case we have just studied is a nice example of how Least Squares fitting 
+is not always a suitable approach for the problem. We have studied that LS 
+only works when we can count on Gaussian signal and when we can assume 
+that the parameters dependence is only encoded in the mean and is furthermore 
+linear.
+There actually is a condition under which these requirements could be fulfilled 
+in this problem too, that is when the sinusoidal model $f(t)$ can be 
+approximated as linear. Note that if $\omega t << 1$, like in a low-frequency 
+case, then $f(t) \approx B_1 + B_2\omega t$ and we have a proper environment 
+for a LS fitting.
 
 
 \end{document}
