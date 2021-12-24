@@ -46,7 +46,7 @@ introudce this new variable, then
     \label{eqn:der}
     \frac{\partial \chi^{(2)}}{\partial A_l} = \sum_i \frac{\partial \chi^{(2)}}{\partial u_i}\frac{\partial u_i}{\partial A_l}
 \end{equation}
-The second derivative factor is pretty easy
+The second factor is pretty easy
 \begin{equation*}
     \frac{\partial u_i}{\partial A_l} = \frac{\partial }{\partial A_l} \sum_j A_j T_{ij} = T_{il} 
 \end{equation*}
@@ -62,7 +62,7 @@ where we exploited the symmetry of C. So overall, according to \ref{eqn:der}
 \end{equation*}
 Now it's a matter of setting the latter equation to 0, so we can forget about 
 the $-2$ factor before the sum: it's also the right 
-moment to explicit the expression of $u_n$, which was hidding $\vec{A}$
+moment to explicit the expression of $u_n$, which was hiding $\vec{A}$
 until now.
 \begin{gather*}
     \sum_{in}T_{il}C^{-1}_{in}(d_n-\sum_j A_j T_{jn}) = 0 \\
@@ -367,14 +367,14 @@ Thanks to these new definitions and neglecting the last sum, we get
 See that we did not specify the $\omega$ dependance on $c$ and $s$, as 
 in first approximation they are independent on frequency. To show this, 
 we make use of the continuous approximation again, together with the high 
-frquency limit. 
+frequency limit. 
 \begin{gather*}
     s = \sum_i \sin^2(\omega t_i)\approx \frac{1}{N\Delta}\int_{t_1}^{t_N} \sin^2(\omega t)dt =\\
     = \frac{1}{2N\Delta} \int_{t_1}^{t_N}(1-\cos(2\omega t))dt = \frac{1}{2N}-\frac{1}{2N \Delta \cdot 2\omega}[\sin(2\omega t)]_{t_1}^{t_N}\approx \frac{1}{2N}
 \end{gather*}
 \begin{gather*}
     c = \sum_i \cos^2(\omega t_i)\approx \frac{1}{N\Delta}\int_{t_1}^{t_N} \cos^2(\omega t)dt =\\
-    = \frac{1}{2N\Delta} \int_{t_1}^{t_N}(\cos(2\omega t)+1)dt = \frac{1}{2N}+\frac{1}{2N \Delta \cdot 2\omega}[\sin(2\omega t)]_{t_1}^{t_N}\approx \frac{1}{2N}
+    = \frac{1}{2N\Delta} \int_{t_1}^{t_N}(1+\cos(2\omega t))dt = \frac{1}{2N}+\frac{1}{2N \Delta \cdot 2\omega}[\sin(2\omega t)]_{t_1}^{t_N}\approx \frac{1}{2N}
 \end{gather*}
 Therefore we can treat $s$ and $c$ as $\omega$-independent terms.
 
