@@ -1,34 +1,37 @@
-import matplotlib.pyplot as plt
 import numpy as np
-from numpy.random import random, seed
+import matplotlib.pyplot as plt
 from scipy.stats import multivariate_normal as mvn
-import scipy.integrate as integrate
+
 
 D = int(2)
 x = np.random.rand(D)
 mu = np.array([4,2],float)
 cov = np.array([[1.44,-0.702],[-0.702,0.81]])
+det = cov[0,0]*cov[1,1]-cov[0,1]**2
+prec = np.linalg.inv(cov)
 
-def func(x):
-    return np.e**(-x**2)
+L = np.linalg.cholesky(cov) # Cholesky decompositionplt.figure(figsize = (12, 6))
 
-interval_x = [-1000, 1000]
-Itot = integrate.quad(func, interval_x[0], interval_x[1], epsrel=1.e-14)
+r = np.random.normal(loc=0.0, scale=1.0, size=(int(1e5),2))
+v = []
+for item in r:
+    v.append(np.dot(L,item)+mu)
+
+X = []
+Y = []
+for item in v:
+    X.append(item[0])
+    Y.append(item[1])
 
 
-eps=1.e-1
-X1 = mu[0]-eps
-X2  = mu[0]+eps
-I=[0,0]
+def condition(xvec,yvec, fixed):
+    conditioned=[]
+    delta=0.1
+    for i in range(len(yvec)):
+        if(yvec[i]<=(fixed+delta) and yvec[i]>=(fixed-delta)):
+            conditioned.append(xvec[i])
+    return conditioned
 
-alpha = Itot[0]*0.95
-print(alpha)
-while(I[0]<alpha): 
-    I = integrate.quad(func, X1, X2 , epsrel=1.e-9)
-    X1 -= eps
-    X2 += eps
-    print(X1,X2)
-    print("ok")
-
-print(I)
-print(X1,X2)
+condy = condition(X,Y,3.)
+plt.hist(condy)
+plt.show()
